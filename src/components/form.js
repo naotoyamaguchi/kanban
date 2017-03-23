@@ -7,7 +7,7 @@ export default class CardForm extends Component {
     this.state = {
       title: '',
       priority: '',
-      status: '',
+      status: 'todo',
       createdBy: '',
       assignedTo: '',
     };
@@ -34,7 +34,6 @@ export default class CardForm extends Component {
     this.setState({
       title: '',
       priority: '',
-      status: '',
       createdBy: '',
       assignedTo: '',
     });
@@ -83,7 +82,11 @@ export default class CardForm extends Component {
         </div>
           
         <div>
-          <input type="text" placeholder="status" value={this.state.status} onChange={this.statusVal} />          
+          <select onChange={this.statusVal}>
+            <option value="todo">to do</option>
+            <option value="inprogress">in progress</option>
+            <option value="done">done</option>
+          </select>    
         </div>
         <div>
           <input type="text" placeholder="createdBy" value={this.state.createdBy} onChange={this.createdByVal} />

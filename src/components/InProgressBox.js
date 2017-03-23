@@ -1,60 +1,60 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 import Card from './Card';
 
-export default class InProgressBox extends Component {
+export default class InProgressBox extends Component{
   constructor(props){
     super(props);
 
-    this.state = {
-      cards: []
-    }
+    this.props = props;
+    console.log(this.props.id);
+
+    this.submit = this.submit.bind(this);
   }
 
-  getCards(){
-    return new Promise(function(resolve, reject){
-      function reqListener(){
-        resolve(this.responseText)
-        console.log(this.responseText)
-      }
+  submit(e){
+    e.preventDefault();
 
-      let oReq = new XMLHttpRequest();
-      oReq.addEventListener("load", reqListener)
-      oReq.open("GET", "api/card/getInProgress")
-      oReq.setRequestHeader("Content-Type", "application/json")
-      oReq.send();
-    });
+    this.props.deleteCard(this.props)
   }
 
-  componentWillMount(){
-    this.getCards()
-    .then((data)=>{
-      console.log(JSON.parse(data));
-    this.setState({ cards: JSON.parse(data) })
-    })
-    .catch(function(e){
-      console.log(e);
-    })
-  }
 
   render(){
     return (
-      <div className="InProgressBox">
-        <h1>IN PROGRESS</h1>
-          {
-            this.state.cards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
-              <Card
-                key={id}
-                id={id}
-                title={title}
-                assignedTo={assignedTo}
-                status={status}
-                createdAt={createdAt}
-                createdBy={createdBy}
-                priority={priority}
-                updatedAt={updatedAt}
-              />)
-          }
+      <div className="Card-Box">
+        <p>Title : {this.props.title}</p>
+        <p>ID : {this.props.id}</p>
+        <p>title: {this.props.title}</p>
+        <p>assigned to: {this.props.assignedTo}</p>
+        <p>status: {this.props.status}</p>
+        <p>created at: {this.props.createdAt}</p>
+        <p>created by: {this.props.createdBy}</p>
+        <p>priority: {this.props.priority}</p>
+        <p>updated at: {this.props.updatedAt}</p>
+        <form onSubmit={this.submit}>
+            <input type="submit" value={this.props.id}/>
+        </form>
       </div>
     )
   }
 }
+
+// const InProgressBox = (props) => (
+//   <div className="Card-Box">
+//     <p>Title : {props.title}</p>
+//     <p>ID : {props.id}</p>
+//     <p>title: {props.title}</p>
+//     <p>assigned to: {props.assignedTo}</p>
+//     <p>status: {props.status}</p>
+//     <p>created at: {props.createdAt}</p>
+//     <p>created by: {props.createdBy}</p>
+//     <p>priority: {props.priority}</p>
+//     <p>updated at: {props.updatedAt}</p>
+//     <form>
+//       <div>
+//         <input type="submit" value={props.id}/>
+//       </div>
+//     </form>
+//   </div>
+// )
+
+// export default InProgressBox;

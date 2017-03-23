@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 const KanbanTitle = (props) => (
   <div className="App-header">

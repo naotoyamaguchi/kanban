@@ -93,10 +93,11 @@ router.put('/assignedTo-update/:id', (req, res) => {
   });
 });
 
-router.put('/status-update/:id', (req, res) => {
+router.put('/status-update-next/:id', (req, res) => {
+  console.log(req)
   Card.update(
   {
-    status: req.body.status
+    status: "done"
   },
   {where: {id: `${req.params.id}`}}
   )

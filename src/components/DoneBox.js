@@ -1,59 +1,38 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 import Card from './Card';
 
-export default class DoneBox extends Component {
+export default class DoneBox extends Component{
   constructor(props){
     super(props);
 
-    this.state = {
-      cards: []
-    }
+    this.props = props;
+    console.log(this.props.id);
+
+    this.submit = this.submit.bind(this);
   }
 
-  getCards(){
-    return new Promise(function(resolve, reject){
-      function reqListener(){
-        resolve(this.responseText)
-        console.log(this.responseText)
-      }
+  submit(e){
+    e.preventDefault();
 
-      let oReq = new XMLHttpRequest();
-      oReq.addEventListener("load", reqListener)
-      oReq.open("GET", "api/card/getDone")
-      oReq.setRequestHeader("Content-Type", "application/json")
-      oReq.send();
-    });
+    this.props.deleteCard(this.props)
   }
 
-  componentWillMount(){
-    this.getCards()
-    .then((data)=>{
-      console.log(JSON.parse(data));
-    this.setState({ cards: JSON.parse(data) })
-    })
-    .catch(function(e){
-      console.log(e);
-    })
-  }
 
   render(){
     return (
-      <div className="DoneBox">
-        <h1>DONE</h1>
-          {
-            this.state.cards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
-              <Card
-                key={id}
-                id={id}
-                title={title}
-                assignedTo={assignedTo}
-                status={status}
-                createdAt={createdAt}
-                createdBy={createdBy}
-                priority={priority}
-                updatedAt={updatedAt}
-              />)
-          }
+      <div className="Card-Box">
+        <p>Title : {this.props.title}</p>
+        <p>ID : {this.props.id}</p>
+        <p>title: {this.props.title}</p>
+        <p>assigned to: {this.props.assignedTo}</p>
+        <p>status: {this.props.status}</p>
+        <p>created at: {this.props.createdAt}</p>
+        <p>created by: {this.props.createdBy}</p>
+        <p>priority: {this.props.priority}</p>
+        <p>updated at: {this.props.updatedAt}</p>
+        <form onSubmit={this.submit}>
+            <input type="submit" value={this.props.id}/>
+        </form>
       </div>
     )
   }
