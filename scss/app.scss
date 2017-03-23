@@ -1,0 +1,67 @@
+@import "./partials/reset";
+@import "./partials/clearfix";
+
+.App{
+  font-family: Arial;
+}
+
+.App-intro{
+  width: 100%;
+  height: 2%;
+  border: 1px solid blue;
+  text-align: center;
+  padding: 1rem;
+}
+
+.App-header{
+  font-size: 3vw;
+  font-weight: bold;
+  align-content: center;
+  text-align: center;
+}
+
+.Kanban-Box{
+  height: 700px;
+  width: 95%;
+  border: 3px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Priority-Box{
+  width: 31%;
+  height: 90%;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ToDoBox{
+  width: 31%;
+  height: 90%;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.InProgressBox{
+  width: 31%;
+  height: 90%;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.DoneBox{
+  width: 31%;
+  height: 90%;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Card-Box{
+  border: 1px solid red;
+}
