@@ -94,11 +94,26 @@ router.put('/assignedTo-update/:id', (req, res) => {
 });
 
 router.put('/status-update-next/:id', (req, res) => {
-  console.log(req)
-  Card.update(
-  {
-    status: "done"
-  },
+  if(req.body.status === "todo")
+    Card.update({status: "inprogress"},
+  {where: {id: `${req.params.id}`}}
+  )
+  if(req.body.status === "inprogress")
+    Card.update({status: "done"},
+  {where: {id: `${req.params.id}`}}
+  )
+  .then(function() {
+    res.end();
+  });
+});
+
+router.put('/status-update-back/:id', (req, res) => {
+  if(req.body.status === "inprogress")
+    Card.update({status: "todo"},
+  {where: {id: `${req.params.id}`}}
+  )
+  if(req.body.status === "done")
+    Card.update({status: "inprogress"},
   {where: {id: `${req.params.id}`}}
   )
   .then(function() {

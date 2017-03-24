@@ -61,6 +61,7 @@ class App extends Component {
         console.log(this.responseText)
       }
 
+
       let oReq = new XMLHttpRequest();
       oReq.addEventListener("load", reqListener)
       oReq.open("GET", "api/card/getDone")
@@ -172,12 +173,26 @@ class App extends Component {
   }
 
   done(key){
-    console.log("Hello there")
+    console.log("Hello there", key)
     return new Promise(function(resolve, reject){
+      const data = `id=${key.id}&status=${key.status}`
+
       let oReq = new XMLHttpRequest();
       oReq.open("PUT", `api/card/status-update-next/${key.id}`, true);
       oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-      oReq.send("hello")
+      oReq.send(data)
+      resolve("OK")
+    })
+  }
+
+  goBack(key){
+    return new Promise(function(resolve, reject){
+      const data = `id=${key.id}&status=${key.status}`
+
+      let oReq = new XMLHttpRequest();
+      oReq.open("PUT", `api/card/status-update-back/${key.id}`, true);
+      oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+      oReq.send(data)
       resolve("OK")
     })
   }
@@ -231,6 +246,8 @@ class App extends Component {
                   priority={priority}
                   updatedAt={updatedAt}
                   deleteCard={this.deleteUpdate}
+                  done={this.done}
+                  back={this.goBack}
                 />
                 )
             }
@@ -249,6 +266,7 @@ class App extends Component {
                   priority={priority}
                   updatedAt={updatedAt}
                   deleteCard={this.deleteUpdate}
+                  back={this.goBack}
                 />
                 )
             }

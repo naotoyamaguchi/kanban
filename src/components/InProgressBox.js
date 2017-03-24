@@ -9,12 +9,24 @@ export default class InProgressBox extends Component{
     console.log(this.props.id);
 
     this.submit = this.submit.bind(this);
+    this.done = this.done.bind(this);
+    this.back = this.back.bind(this);
   }
 
   submit(e){
     e.preventDefault();
 
     this.props.deleteCard(this.props)
+  }
+
+  done(e){
+    e.preventDefault();
+    this.props.done(this.props);
+  }
+
+  back(e){
+    e.preventDefault();
+    this.props.back(this.props);
   }
 
 
@@ -32,6 +44,12 @@ export default class InProgressBox extends Component{
         <p>updated at: {this.props.updatedAt}</p>
         <form onSubmit={this.submit}>
             <input type="submit" value={this.props.id}/>
+        </form>
+        <form onSubmit={this.done}>
+            <input type="submit" value="===>>>"/>
+        </form>
+        <form onSubmit ={this.back}>
+            <input type="submit" value="<<<==="/>
         </form>
       </div>
     )
