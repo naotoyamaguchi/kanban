@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import Card from './Card';
+import addCard from '../actions'
+import { connect } from 'react-redux';
 
-export default class InProgressBox extends Component {
+class InProgressBox extends Component {
   constructor(props){
     super(props);
 
@@ -14,7 +16,6 @@ export default class InProgressBox extends Component {
     return new Promise(function(resolve, reject){
       function reqListener(){
         resolve(this.responseText)
-        console.log(this.responseText)
       }
 
       let oReq = new XMLHttpRequest();
@@ -28,8 +29,9 @@ export default class InProgressBox extends Component {
   componentWillMount(){
     this.getCards()
     .then((data)=>{
-      console.log(JSON.parse(data));
-    this.setState({ cards: JSON.parse(data) })
+      JSON.parse(data).forEach( card => {
+        this.props.onAddCard(card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      })
     })
     .catch(function(e){
       console.log(e);
@@ -41,7 +43,7 @@ export default class InProgressBox extends Component {
       <div className="InProgressBox">
         <h1>IN PROGRESS</h1>
           {
-            this.state.cards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
+            this.props.inProgressCards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
               <Card
                 key={id}
                 id={id}
@@ -58,3 +60,23 @@ export default class InProgressBox extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    inProgressCards: state.inProgressCards
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddCard: (title, author, priority, status, createdBy, assignedTo) => {
+      // console.log("addCard ", addCard(title,author,priority,status,createdBy,assignedTo))
+      dispatch(addCard(title, author, priority, status, createdBy, assignedTo));
+    }
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InProgressBox);

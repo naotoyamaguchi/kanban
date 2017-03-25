@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import Card from './Card';
+import addCard from '../actions'
+import { connect } from 'react-redux';
 
-export default class DoneBox extends Component {
+class DoneBox extends Component {
   constructor(props){
     super(props);
 
@@ -14,7 +16,6 @@ export default class DoneBox extends Component {
     return new Promise(function(resolve, reject){
       function reqListener(){
         resolve(this.responseText)
-        console.log(this.responseText)
       }
 
       let oReq = new XMLHttpRequest();
@@ -28,11 +29,11 @@ export default class DoneBox extends Component {
   componentWillMount(){
     this.getCards()
     .then((data)=>{
-      console.log(JSON.parse(data));
-    this.setState({ cards: JSON.parse(data) })
+      JSON.parse(data).forEach( card => {
+        this.props.onAddCard(card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      })
     })
     .catch(function(e){
-      console.log(e);
     })
   }
 
@@ -41,7 +42,7 @@ export default class DoneBox extends Component {
       <div className="DoneBox">
         <h1>DONE</h1>
           {
-            this.state.cards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
+            this.props.doneCards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
               <Card
                 key={id}
                 id={id}
@@ -58,3 +59,22 @@ export default class DoneBox extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    doneCards: state.doneCards
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddCard: (title, author, priority, status, createdBy, assignedTo) => {
+      dispatch(addCard(title, author, priority, status, createdBy, assignedTo));
+    }
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DoneBox);

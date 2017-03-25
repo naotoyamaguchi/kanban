@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux';
+import addCard from '../actions'
 
-export default class CardForm extends Component {
+export class CardForm extends Component {
   constructor(props){
     super(props);
 
@@ -18,18 +20,23 @@ export default class CardForm extends Component {
     this.statusVal = this.statusVal.bind(this);
     this.createdByVal = this.createdByVal.bind(this);
     this.assignedToVal = this.assignedToVal.bind(this);
+    this.addCard = this.addCard.bind(this);
   }
 
   submit(e){
     e.preventDefault();
 
-    this.props.addCard( {
+    this.addCard( {
       title: this.state.title,
       priority: this.state.priority,
       status: this.state.status,
       createdBy: this.state.createdBy,
       assignedTo: this.state.assignedTo
-    });
+    })
+    .then((card) => {
+      this.props.onAddCard(card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+    })
+
 
     this.setState({
       title: '',
@@ -70,6 +77,21 @@ export default class CardForm extends Component {
     });
   }
 
+  addCard(card){
+    return new Promise(function(resolve, reject){
+      function reqListener(){
+        resolve(card)
+      }
+
+      let oReq = new XMLHttpRequest();
+      oReq.open("POST", "api/card/post", true);
+      oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+      oReq.send(`title=${card.title}&priority=${card.priority}&status=${card.status}&createdBy=${card.createdBy}&assignedTo=${card.assignedTo}`);
+      oReq.addEventListener("load", reqListener)
+    })
+  }
+
+
   //
 
   render(){
@@ -98,3 +120,22 @@ export default class CardForm extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    toDoCards: state.toDoCards
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddCard: (title, author, priority, status, createdBy, assignedTo) => {
+      dispatch(addCard(title, author, priority, status, createdBy, assignedTo));
+    }
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CardForm);
