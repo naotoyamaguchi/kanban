@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { updateCard, deleteCard, deupdatedCard, deleteCard2 } from '../actions'
+import { moveCardRight, moveCardLeft, nextCard, backCard } from '../actions'
 import { connect } from 'react-redux'
 
 class Card extends Component {
@@ -18,8 +18,8 @@ class Card extends Component {
     e.preventDefault()
     this.nextCard(this.props)
     .then((card) => {
-      this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
-      this.props.onUpdateCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onMoveCardRight(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onNextCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
     })
 
 
@@ -44,7 +44,7 @@ class Card extends Component {
     this.backCard(this.props)
     .then((card) => {
       this.props.onBackCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
-      this.props.onUpdateCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onMoveCardLeft(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
     })
   }
 
@@ -146,13 +146,16 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onBackCard: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(deleteCard2(id, title, author, priority, status, createdBy, assignedTo));
+      dispatch(backCard(id, title, author, priority, status, createdBy, assignedTo));
     },
-    onAddCard: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(updateCard(id, title, author, priority, status, createdBy, assignedTo));
+    onMoveCardRight: (id, title, author, priority, status, createdBy, assignedTo) => {
+      dispatch(moveCardRight(id, title, author, priority, status, createdBy, assignedTo));
     },
-    onUpdateCard: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(deleteCard(id, title, author, priority, status, createdBy, assignedTo));
+    onMoveCardLeft: (id, title, author, priority, status, createdBy, assignedTo) => {
+      dispatch(moveCardLeft(id, title, author, priority, status, createdBy, assignedTo));
+    },
+    onNextCard: (id, title, author, priority, status, createdBy, assignedTo) => {
+      dispatch(nextCard(id, title, author, priority, status, createdBy, assignedTo));
     },
 
 

@@ -13,39 +13,55 @@ export function addCard(id, title, author, priority, status, createdBy, assigned
   }
 }
 
-export function updateCard(id, title, author, priority, status, createdBy, assignedTo){
+export function moveCardRight(id, title, author, priority, status, createdBy, assignedTo){
   return {
-    type: `UPDATE_`,
+    type: `MOVE_CARD_RIGHT`,
     status,
-    id
+    id,
+    title,
+    priority,
+    status,
+    createdBy,
+    assignedTo
   }
 }
 
-export function deleteCard(id, title, author, priority, status, createdBy, assignedTo){
+export function moveCardLeft(id, title, author, priority, status, createdBy, assignedTo){
   return {
-    type: `UPDATE2_`,
+    type: `MOVE_CARD_LEFT`,
     status,
-    id
+    id,
+    title,
+    priority,
+    status,
+    createdBy,
+    assignedTo
   }
 }
 
-export function deupdateCard(id, title, author, priority, status, createdBy, assignedTo){
-  console.log("depdateCard actions.js status", status)
+export function nextCard(id, title, author, priority, status, createdBy, assignedTo){
   return {
-    type: `DEUPDATE_`,
+    type: `NEXT_CARD`,
     status,
-    id
+    id,
+    title,
+    priority,
+    status,
+    createdBy,
+    assignedTo
   }
 }
 
-export function deleteCard2(id, title, author, priority, status, createdBy, assignedTo){
-  console.log("deleteCard2 actions.js", status)
+export function backCard(id, title, author, priority, status, createdBy, assignedTo){
+  console.log("backCard FROM actions.js", status)
   return {
-    type: `DEUPDATE2_`,
+    type: `BACK_CARD`,
     status,
-    id
+    id,
+    title,
+    priority,
+    status,
+    createdBy,
+    assignedTo
   }
 }
-
-
-// export default addCard;

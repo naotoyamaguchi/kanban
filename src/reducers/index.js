@@ -24,6 +24,7 @@ export function toDoCards(state = initialState, action) {
           }
         ]
       })
+    break;
 
     case "inprogress":
       return Object.assign({}, state, {
@@ -39,6 +40,7 @@ export function toDoCards(state = initialState, action) {
           }
         ]
       })
+    break;
 
     case "done":
       return Object.assign({}, state, {
@@ -54,8 +56,9 @@ export function toDoCards(state = initialState, action) {
           }
         ]
       })
+    break;
 
-    case "UPDATE_":
+    case "MOVE_CARD_RIGHT":
 
     if(action.status === "todo"){
       return Object.assign({}, state, {      
@@ -89,7 +92,45 @@ export function toDoCards(state = initialState, action) {
       })
     }
 
-    case "UPDATE2_":
+    break;
+
+    case "MOVE_CARD_LEFT":
+
+    if(action.status === "done"){
+      return Object.assign({}, state, {      
+        inProgressCards: [
+          ...state.inProgressCards,
+          {
+            id: action.id,
+            title: action.title,
+            status: "inprogress",
+            createdBy: action.createdBy,
+            assignedTo: action.assignedTo,
+            priority: action.priority
+          }
+        ]
+      })
+    }
+
+    if(action.status === "inprogress"){
+      return Object.assign({}, state, {    
+        toDoCards: [
+          ...state.toDoCards,
+          {
+            id: action.id,
+            title: action.title,
+            status: "todo",
+            createdBy: action.createdBy,
+            assignedTo: action.assignedTo,
+            priority: action.priority
+          }
+        ]
+      })
+    }
+
+    break;
+
+    case "NEXT_CARD":
     if(action.status === "todo"){
     let updatedCards = state.toDoCards.filter( card => {
       return card.id !== action.id 
@@ -112,44 +153,9 @@ export function toDoCards(state = initialState, action) {
       })
     }
 
-    case "DEUPDATE_":
+    break;
 
-    if(action.status === "done"){
-      
-      return Object.assign({}, state, {
-    
-        inProgressCards: [
-        ...state.inProgressCards,
-          {
-          id: action.id,
-          title: action.title,
-          status: "inprogress",
-          createdBy: action.createdBy,
-          assignedTo: action.assignedTo,
-          priority: action.priority
-        }
-        ]
-      })
-    }
-
-    if(action.status === "inprogress"){
-      console.log("need to make this work")
-      return Object.assign({}, state, {    
-        toDoCards: [
-          ...state.toDoCards,
-          {
-            id: action.id,
-            title: action.title,
-            status: "todo",
-            createdBy: action.createdBy,
-            assignedTo: action.assignedTo,
-            priority: action.priority
-          }
-        ]
-      })
-    }
-
-    case "DEUPDATE2_":
+    case "BACK_CARD":
     if(action.status === "done"){
       let updatedCards = state.doneCards.filter( card => {
         return card.id !== action.id
@@ -162,15 +168,17 @@ export function toDoCards(state = initialState, action) {
     }
 
     if(action.status === "inprogress"){
-    let updatedCards = state.toDoCards.filter( card => {
+    let updatedCards = state.inProgressCards.filter( card => {
       return card.id !== action.id
     })
       return Object.assign({}, state, {
-      toDoCards: [
+      inProgressCards: [
       ...updatedCards
       ]
       })
     }
+
+    break;
 
     default:
       return state;
