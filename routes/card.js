@@ -53,8 +53,8 @@ router.post('/post', (req, res) => {
     assignedTo: req.body.assignedTo
   }
   )
-  .then(function () {
-    res.end();
+  .then(results => {
+    res.send(results);
   });
 });
 
@@ -93,16 +93,58 @@ router.put('/assignedTo-update/:id', (req, res) => {
   });
 });
 
-router.put('/status-update/:id', (req, res) => {
-  Card.update(
-  {
-    status: req.body.status
-  },
-  {where: {id: `${req.params.id}`}}
-  )
-  .then(function() {
-    res.end();
-  });
+router.put('/status-next/:id', (req, res) => {
+  console.log("Wtf", req.body);
+  if(req.body.status === "todo"){
+    Card.update(
+    {
+      status: "inprogress"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then( () => {
+      res.end();
+    });
+  }
+
+  if(req.body.status === "inprogress"){
+    Card.update(
+    {
+      status: "done"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then ( () => {
+      res.end();
+    })
+  }
+
 });
+
+router.put('/status-back/:id', (req, res) => {
+  if(req.body.status === "inprogress"){
+    Card.update(
+    {
+      status: "todo"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then( () => {
+      res.end();
+    });
+  }
+
+  if(req.body.status === "done"){
+    Card.update(
+    {
+      status: "inprogress"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then ( () => {
+      res.end();
+    })
+  }
+})
 
 module.exports = router;

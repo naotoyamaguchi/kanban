@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
-import addCard from '../actions'
+import { addCard } from '../actions'
 
 export class CardForm extends Component {
   constructor(props){
@@ -9,7 +9,7 @@ export class CardForm extends Component {
     this.state = {
       title: '',
       priority: '',
-      status: '',
+      status: 'todo',
       createdBy: '',
       assignedTo: '',
     };
@@ -34,14 +34,14 @@ export class CardForm extends Component {
       assignedTo: this.state.assignedTo
     })
     .then((card) => {
-      this.props.onAddCard(card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
     })
 
 
     this.setState({
       title: '',
       priority: '',
-      status: '',
+      // status: '',
       createdBy: '',
       assignedTo: '',
     });
@@ -80,7 +80,8 @@ export class CardForm extends Component {
   addCard(card){
     return new Promise(function(resolve, reject){
       function reqListener(){
-        resolve(card)
+        let results = JSON.parse(this.responseText);
+        resolve(results)
       }
 
       let oReq = new XMLHttpRequest();
@@ -105,7 +106,11 @@ export class CardForm extends Component {
         </div>
           
         <div>
-          <input type="text" placeholder="status" value={this.state.status} onChange={this.statusVal} />          
+          <select onChange={this.statusVal}>
+            <option value="todo">to do</option>
+            <option value="inprogress">in progress</option>
+            <option value="done">done</option>
+          </select>    
         </div>
         <div>
           <input type="text" placeholder="createdBy" value={this.state.createdBy} onChange={this.createdByVal} />

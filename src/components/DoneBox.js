@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Card from './Card';
-import addCard from '../actions'
+import { addCard }  from '../actions'
 import { connect } from 'react-redux';
 
 class DoneBox extends Component {
@@ -30,7 +30,7 @@ class DoneBox extends Component {
     this.getCards()
     .then((data)=>{
       JSON.parse(data).forEach( card => {
-        this.props.onAddCard(card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+        this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
       })
     })
     .catch(function(e){
@@ -68,8 +68,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAddCard: (title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(addCard(title, author, priority, status, createdBy, assignedTo));
+    onAddCard: (id, title, author, priority, status, createdBy, assignedTo) => {
+      dispatch(addCard(id, title, author, priority, status, createdBy, assignedTo));
     }
   }
 };
