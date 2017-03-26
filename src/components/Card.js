@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { moveCardRight, moveCardLeft, nextCard, backCard } from '../actions'
+import { moveCardRight, moveCardLeft, nextCard, backCard, deleteCard } from '../actions'
 import { connect } from 'react-redux'
 
 class Card extends Component {
@@ -9,6 +9,7 @@ class Card extends Component {
     this.nextCard = this.nextCard.bind(this);
     this.next = this.next.bind(this);
     this.back = this.back.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   //function(){
@@ -18,8 +19,8 @@ class Card extends Component {
     e.preventDefault()
     this.nextCard(this.props)
     .then((card) => {
-      this.props.onMoveCardRight(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
-      this.props.onNextCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onMoveCardRight(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
+      this.props.onNextCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
     })
 
 
@@ -43,8 +44,8 @@ class Card extends Component {
     e.preventDefault()
     this.backCard(this.props)
     .then((card) => {
-      this.props.onBackCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
-      this.props.onMoveCardLeft(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onBackCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
+      this.props.onMoveCardLeft(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
     })
   }
 
@@ -63,6 +64,28 @@ class Card extends Component {
     })
   }
 
+  delete(e){
+    e.preventDefault()
+    this.deleteCard(this.props)
+    .then((card) => {
+      this.props.onDelete(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
+    })
+  }
+
+  deleteCard(card){
+    return new Promise(function(resolve, reject){
+      function reqListener(){
+        resolve(card)
+      }
+
+      let oReq = new XMLHttpRequest();
+      oReq.open("DELETE", `api/card/${card.id}`, true);
+      oReq.addEventListener("load", reqListener)
+      oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+      oReq.send(`id=${card.id}&title=${card.title}&priority=${card.priority}&status=${card.status}&createdBy=${card.createdBy}&assignedTo=${card.assignedTo}`)
+    })
+  }
+
   render(){
       if(this.props.status === "todo"){
       return(
@@ -71,7 +94,7 @@ class Card extends Component {
           <li>
             <p> key/id = { this.props.id } </p>
             <p> title = { this.props.title } </p>
-            <p> assingnedTo = { this.props.assignedTo } </p>
+            <p> assignedTo = { this.props.assignedTo } </p>
             <p> status = {this.props.status } </p>
             <p> createdAt = { this.props.createdAt } </p>
             <p> createdBy = { this.props.createdBy } </p>
@@ -79,6 +102,9 @@ class Card extends Component {
             <p> updatedAt = { this.props.updatedAt } </p>
             <form onSubmit={ this.next }>
               <input type="submit" value="=>" />
+            </form>
+            <form onSubmit={ this.delete }>
+              <input type="submit" value="DELETE"/>
             </form>
           </li>
         </ul>
@@ -93,7 +119,7 @@ class Card extends Component {
           <li>
             <p> key/id = { this.props.id } </p>
             <p> title = { this.props.title } </p>
-            <p> assingnedTo = { this.props.assignedTo } </p>
+            <p> assignedTo = { this.props.assignedTo } </p>
             <p> status = {this.props.status } </p>
             <p> createdAt = { this.props.createdAt } </p>
             <p> createdBy = { this.props.createdBy } </p>
@@ -102,8 +128,11 @@ class Card extends Component {
             <form onSubmit={ this.next }>
               <input type="submit" value="=>" />
             </form>
-            <form onSubmit = { this.back }>
+            <form onSubmit={ this.back }>
               <input type="submit" value="<=" />
+            </form>
+            <form onSubmit={ this.delete }>
+              <input type="submit" value="DELETE"/>
             </form>
           </li>
         </ul>
@@ -118,7 +147,7 @@ class Card extends Component {
           <li>
             <p> key/id = { this.props.id } </p>
             <p> title = { this.props.title } </p>
-            <p> assingnedTo = { this.props.assignedTo } </p>
+            <p> assignedTo = { this.props.assignedTo } </p>
             <p> status = {this.props.status } </p>
             <p> createdAt = { this.props.createdAt } </p>
             <p> createdBy = { this.props.createdBy } </p>
@@ -126,6 +155,9 @@ class Card extends Component {
             <p> updatedAt = { this.props.updatedAt } </p>
             <form onSubmit={ this.back }>
               <input type="submit" value="<=" />
+            </form>
+            <form onSubmit={ this.delete }>
+              <input type="submit" value="DELETE"/>
             </form>
           </li>
         </ul>
@@ -145,17 +177,20 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onBackCard: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(backCard(id, title, author, priority, status, createdBy, assignedTo));
+    onBackCard: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(backCard(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
     },
-    onMoveCardRight: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(moveCardRight(id, title, author, priority, status, createdBy, assignedTo));
+    onDelete: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(deleteCard(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
     },
-    onMoveCardLeft: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(moveCardLeft(id, title, author, priority, status, createdBy, assignedTo));
+    onMoveCardRight: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(moveCardRight(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
     },
-    onNextCard: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(nextCard(id, title, author, priority, status, createdBy, assignedTo));
+    onMoveCardLeft: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(moveCardLeft(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
+    },
+    onNextCard: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(nextCard(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
     },
 
 

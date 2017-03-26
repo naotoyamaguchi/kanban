@@ -43,7 +43,6 @@ router.get('/getDone', (req, res) => {
 });
 
 router.post('/post', (req, res) => {
-  console.log(req.body);
   Card.create(
   {
     title: req.body.title,

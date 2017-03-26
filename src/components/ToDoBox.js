@@ -30,7 +30,7 @@ class ToDoBox extends Component {
     this.getCards()
     .then((data)=>{
       JSON.parse(data).forEach( card => {
-        this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+        this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
       })
     })
     .catch(function(e){
@@ -68,8 +68,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAddCard: (id, title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(addCard(id, title, author, priority, status, createdBy, assignedTo));
+    onAddCard: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(addCard(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
     }
   }
 };

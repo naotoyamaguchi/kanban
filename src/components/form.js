@@ -32,9 +32,10 @@ export class CardForm extends Component {
       status: this.state.status,
       createdBy: this.state.createdBy,
       assignedTo: this.state.assignedTo
+
     })
     .then((card) => {
-      this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo)
+      this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
     })
 
 
@@ -133,9 +134,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
+
   return {
-    onAddCard: (title, author, priority, status, createdBy, assignedTo) => {
-      dispatch(addCard(title, author, priority, status, createdBy, assignedTo));
+    onAddCard: (id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt) => {
+      dispatch(addCard(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt));
     }
   }
 };
