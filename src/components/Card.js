@@ -26,7 +26,6 @@ class Card extends Component {
   }
 
   nextCard(card){
-    console.log("for sean", card)
     return new Promise(function(resolve, reject){
       function reqListener(){
         resolve(card)

@@ -8,7 +8,7 @@ const initialState = {
 }
 
 export function toDoCards(state = initialState, action) {
-  console.log("top action" , action.status);
+  console.log("top of reducers... action is..." , action.status, "type is .... ", action.type);
   switch(action.type) {
     case "todo":
       return Object.assign({}, state, {
@@ -55,7 +55,7 @@ export function toDoCards(state = initialState, action) {
         ]
       })
 
-    case "UPDATE_"+action.status:
+    case "UPDATE_":
 
     if(action.status === "todo"){
       return Object.assign({}, state, {      
@@ -89,7 +89,7 @@ export function toDoCards(state = initialState, action) {
       })
     }
 
-    case "UPDATE2_"+action.status:
+    case "UPDATE2_":
     if(action.status === "todo"){
     let updatedCards = state.toDoCards.filter( card => {
       return card.id !== action.id 
@@ -112,7 +112,7 @@ export function toDoCards(state = initialState, action) {
       })
     }
 
-    case "DEUPDATE_"+action.status:
+    case "DEUPDATE_":
 
     if(action.status === "done"){
       
@@ -133,7 +133,7 @@ export function toDoCards(state = initialState, action) {
     }
 
     if(action.status === "inprogress"){
-      console.log("ACTION", action)
+      console.log("need to make this work")
       return Object.assign({}, state, {    
         toDoCards: [
           ...state.toDoCards,
@@ -149,7 +149,7 @@ export function toDoCards(state = initialState, action) {
       })
     }
 
-    case "DEUPDATE2_"+action.status:
+    case "DEUPDATE2_":
     if(action.status === "done"){
       let updatedCards = state.doneCards.filter( card => {
         return card.id !== action.id

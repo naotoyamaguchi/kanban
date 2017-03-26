@@ -14,35 +14,34 @@ export function addCard(id, title, author, priority, status, createdBy, assigned
 }
 
 export function updateCard(id, title, author, priority, status, createdBy, assignedTo){
-  console.log("update 1")
   return {
-    type: `UPDATE_${status}`,
+    type: `UPDATE_`,
     status,
     id
   }
 }
 
 export function deleteCard(id, title, author, priority, status, createdBy, assignedTo){
-  console.log("update 2");
   return {
-    type: `UPDATE2_${status}`,
+    type: `UPDATE2_`,
     status,
     id
   }
 }
 
 export function deupdateCard(id, title, author, priority, status, createdBy, assignedTo){
+  console.log("depdateCard actions.js status", status)
   return {
-    type: `DEUPDATE_${status}`,
+    type: `DEUPDATE_`,
     status,
     id
   }
 }
 
 export function deleteCard2(id, title, author, priority, status, createdBy, assignedTo){
-  console.log("deupdate 1 One 1 One")
+  console.log("deleteCard2 actions.js", status)
   return {
-    type: `DEUPDATE2_${status}`,
+    type: `DEUPDATE2_`,
     status,
     id
   }
