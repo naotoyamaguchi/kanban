@@ -2,6 +2,23 @@ import React, {Component} from 'react'
 import Card from './Card';
 import { addCard }  from '../actions'
 import { connect } from 'react-redux';
+import { DragSource } from 'react-dnd'
+
+
+const cardSource = {
+  beginDrag(props){
+    return { 
+      title: this.props.title
+    }
+  }
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
 
 class ToDoBox extends Component {
   constructor(props){
@@ -74,7 +91,14 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(ToDoBox);
+
+const DraggableCard = DragSource("CARD", cardSource, collect)(ToDoBox)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ToDoBox);
+)(DraggableCard);

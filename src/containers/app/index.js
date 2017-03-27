@@ -6,6 +6,9 @@ import DoneBox from '../../components/DoneBox';
 import CardForm from '../../components/form';
 import './app.css';
 
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+
 class App extends Component {
 
   constructor(){
@@ -35,4 +38,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);

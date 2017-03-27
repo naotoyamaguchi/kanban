@@ -1,6 +1,30 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import { moveCardRight, moveCardLeft, nextCard, backCard, deleteCard } from '../actions'
 import { connect } from 'react-redux'
+import { DragSource } from 'react-dnd'
+
+const cardSource = {
+  beginDrag(props){
+    return { 
+      title: "HELLO"
+    }
+  }
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
+
+const propTypes = {
+  text: PropTypes.string.isRequired,
+
+  // Injected by React DnD:
+  isDragging: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired
+};
 
 class Card extends Component {
   constructor(props){
@@ -87,7 +111,11 @@ class Card extends Component {
   }
 
   render(){
+    // const { isDragging, connectDragSource, text } = this.props;
       if(this.props.status === "todo"){
+      // const { isDragging, connectDragSource, text } = this.props;
+      // console.log(connectDragSource)
+      // return connectDragSource(
       return(
       <div className="Card-Box">
         <ul>
@@ -196,6 +224,14 @@ const mapDispatchToProps = (dispatch) => {
 
   }
 };
+
+
+// const DraggableCard = DragSource("CARD", cardSource, collect)(Card)
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(DraggableCard);
 
 export default connect(
   mapStateToProps,
