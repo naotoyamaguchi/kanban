@@ -32,9 +32,9 @@ export class CardForm extends Component {
       status: this.state.status,
       createdBy: this.state.createdBy,
       assignedTo: this.state.assignedTo
-
     })
     .then((card) => {
+      console.log(card)
       this.props.onAddCard(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt)
     })
 

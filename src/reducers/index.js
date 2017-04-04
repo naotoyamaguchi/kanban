@@ -1,6 +1,6 @@
 // import { ADD_TODOCARD, ADD_INPROGRESSCARD } from '../actions';
 // import { combineReducers } from 'redux';
-import { UPDATE_STATUS, MOVE_CARD_RIGHT, MOVE_CARD_LEFT, NEXT_CARD, BACK_CARD, DELETE_CARD } from '../actions'
+import { MOVE_CARD_RIGHT, MOVE_CARD_LEFT, NEXT_CARD, BACK_CARD, DELETE_CARD } from '../actions'
 
 const initialState = {
   toDoCards: [],
@@ -67,7 +67,7 @@ export function toDoCards(state = initialState, action) {
     case MOVE_CARD_RIGHT:
 
     if(action.status === "todo"){
-      console.log(action)
+      console.log("todo")
       return Object.assign({}, state, {      
         inProgressCards: [
           ...state.inProgressCards,
@@ -86,6 +86,7 @@ export function toDoCards(state = initialState, action) {
     }
 
     if(action.status === "inprogress"){
+      console.log("inprogress")
       return Object.assign({}, state, {    
         doneCards: [
           ...state.doneCards,

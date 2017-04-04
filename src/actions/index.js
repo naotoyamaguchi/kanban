@@ -21,6 +21,7 @@ export function addCard(id, title, author, priority, status, createdBy, assigned
 }
 
 export function moveCardRight(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt){
+    console.log("!! Move Card Right !!")
   return {
     type: `MOVE_CARD_RIGHT`,
     status,

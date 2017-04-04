@@ -2,11 +2,19 @@ import React, {Component, PropTypes} from 'react'
 import { moveCardRight, moveCardLeft, nextCard, backCard, deleteCard } from '../actions'
 import { connect } from 'react-redux'
 import { DragSource } from 'react-dnd'
+import { ItemTypes } from '../constants/constants'
 
 const cardSource = {
   beginDrag(props){
-    return { 
-      title: "HELLO"
+    console.log("props",props)
+    return {
+      props
+    };
+  },
+
+  endDrag(props){
+    return {
+      cardStatus: props.status
     }
   }
 }
@@ -18,13 +26,13 @@ function collect(connect, monitor) {
   };
 }
 
-const propTypes = {
-  text: PropTypes.string.isRequired,
+// const propTypes = {
+//   text: PropTypes.string.isRequired,
 
-  // Injected by React DnD:
-  isDragging: PropTypes.bool.isRequired,
-  connectDragSource: PropTypes.func.isRequired
-};
+//   // Injected by React DnD:
+//   isDragging: PropTypes.bool.isRequired,
+//   connectDragSource: PropTypes.func.isRequired
+// };
 
 class Card extends Component {
   constructor(props){
@@ -35,6 +43,8 @@ class Card extends Component {
     this.back = this.back.bind(this);
     this.delete = this.delete.bind(this);
   }
+
+
 
   //function(){
 
@@ -112,12 +122,19 @@ class Card extends Component {
 
   render(){
     // const { isDragging, connectDragSource, text } = this.props;
+    const { isDragging, connectDragSource } = this.props;
       if(this.props.status === "todo"){
       // const { isDragging, connectDragSource, text } = this.props;
       // console.log(connectDragSource)
       // return connectDragSource(
-      return(
-      <div className="Card-Box">
+      // const { isDragging, connectDragSource } = this.props;
+      return connectDragSource(
+      <div className="Card-Box" style={{
+        opacity: isDragging ? 0.5 : 1,
+        fontSize: 25,
+        fontWeight: 'bold',
+        cursor: 'move'
+      }}>
         <ul>
           <li>
             <p> key/id = { this.props.id } </p>
@@ -141,8 +158,13 @@ class Card extends Component {
       }
 
       if(this.props.status === "inprogress"){
-      return(
-      <div className="Card-Box">
+      return connectDragSource(
+      <div className="Card-Box" style={{
+        opacity: isDragging ? 0.5 : 1,
+        fontSize: 25,
+        fontWeight: 'bold',
+        cursor: 'move'
+      }}>
         <ul>
           <li>
             <p> key/id = { this.props.id } </p>
@@ -169,8 +191,13 @@ class Card extends Component {
       }
 
       if(this.props.status === "done"){
-      return(
-      <div className="Card-Box">
+      return connectDragSource(
+      <div className="Card-Box" style={{
+        opacity: isDragging ? 0.5 : 1,
+        fontSize: 25,
+        fontWeight: 'bold',
+        cursor: 'move'
+      }}>
         <ul>
           <li>
             <p> key/id = { this.props.id } </p>
@@ -233,7 +260,17 @@ const mapDispatchToProps = (dispatch) => {
 //   mapDispatchToProps
 // )(DraggableCard);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Card);
+Card.propTypes = {
+  connectDragSource: PropTypes.func.isRequired,
+  isDragging: PropTypes.bool.isRequired
+}
+
+const DraggableCard = connect(mapStateToProps, mapDispatchToProps)(Card);
+
+export default DragSource(ItemTypes.CARD, cardSource, collect)(DraggableCard);
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Card);
+

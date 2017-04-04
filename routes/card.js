@@ -53,6 +53,7 @@ router.post('/post', (req, res) => {
   }
   )
   .then(results => {
+    console.log(results);
     res.send(results);
   });
 });
