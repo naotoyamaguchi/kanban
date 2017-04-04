@@ -1,7 +1,26 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import Card from './Card';
 import { addCard }  from '../actions'
 import { connect } from 'react-redux';
+import { ItemTypes } from '../constants/constants'
+import { DropTarget } from 'react-dnd';
+import { removeFromPastState, addToNewState } from '../actions'
+
+const cardTarget = {
+  drop(props, monitor, component){
+    let card = monitor.getItem().props
+
+    component.store.dispatch(addToNewState(card.id, card.title, card.author, card.priority, "done", card.createdBy, card.assignedTo, card.createdAt, card.updatedAt, card))
+    component.store.dispatch(removeFromPastState(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt))
+  }
+}
+
+function collect(connect, monitor){
+  return{
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  }
+}
 
 class DoneBox extends Component {
   constructor(props){
@@ -38,9 +57,12 @@ class DoneBox extends Component {
   }
 
   render(){
-    return (
-      <div className="DoneBox">
-        <h1>DONE</h1>
+    const { connectDropTarget, isOver } = this.props;
+    return connectDropTarget(
+      <div className="DoneBox" style={{
+        position: 'relative'
+      }}>
+        <h1 className="boxTitle">DONE</h1>
           {
             this.props.doneCards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
               <Card
@@ -55,6 +77,18 @@ class DoneBox extends Component {
                 updatedAt={updatedAt}
               />)
           }
+          {isOver &&
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            zIndex: 1,
+            opacity: 0.5,
+            backgroundColor: 'yellow',
+          }} />
+        }
       </div>
     )
   }
@@ -74,7 +108,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(
+DoneBox.propTypes = {
+  isOver: PropTypes.bool.isRequired
+}
+
+const targetDoneBox = connect(
   mapStateToProps,
   mapDispatchToProps
 )(DoneBox);
+
+export default DropTarget(ItemTypes.CARD, cardTarget, collect)(targetDoneBox);

@@ -17,16 +17,13 @@ class App extends Component {
 
   constructor(){
     super();
-    this.pageTitle = "Welcome to Kanban!"
   }
 
   render() {
     return (
       <div className="App">
+        <div className="Header">Kanban</div>
         <div className="App-header">
-          <KanbanTitle
-          title={ this.pageTitle }
-          />
           <CardForm/>
         </div>
         <div className="Kanban-Box">

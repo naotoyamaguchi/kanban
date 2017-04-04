@@ -147,4 +147,42 @@ router.put('/status-back/:id', (req, res) => {
   }
 })
 
+router.put('/status-update/:id', (req, res) => {
+  if(req.body.status === "inprogress"){
+    Card.update(
+    {
+      status: "inprogress"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then( () => {
+      res.end();
+    })
+  }
+
+  if(req.body.status === "todo"){
+    Card.update(
+    {
+      status: "todo"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then( () => {
+      res.end();
+    })
+  }
+
+  if(req.body.status === "done"){
+    Card.update(
+    {
+      status: "done"
+    },
+    {where: {id: `${req.params.id}`}}
+    )
+    .then( () => {
+      res.end();
+    })
+  }
+})
+
 module.exports = router;

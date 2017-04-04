@@ -1,23 +1,25 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import Card from './Card';
 import { addCard }  from '../actions'
 import { connect } from 'react-redux';
-import { DragSource } from 'react-dnd'
+import { ItemTypes } from '../constants/constants'
+import { DropTarget } from 'react-dnd';
+import { removeFromPastState, addToNewState } from '../actions'
 
+const cardTarget = {
+  drop(props, monitor, component){
+    let card = monitor.getItem().props
 
-const cardSource = {
-  beginDrag(props){
-    return { 
-      title: this.props.title
-    }
+    component.store.dispatch(addToNewState(card.id, card.title, card.author, card.priority, "todo", card.createdBy, card.assignedTo, card.createdAt, card.updatedAt, card))
+    component.store.dispatch(removeFromPastState(card.id, card.title, card.author, card.priority, card.status, card.createdBy, card.assignedTo, card.createdAt, card.updatedAt))
   }
 }
 
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-  };
+function collect(connect, monitor){
+  return{
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  }
 }
 
 class ToDoBox extends Component {
@@ -55,9 +57,12 @@ class ToDoBox extends Component {
   }
 
   render(){
-    return (
-      <div className="ToDoBox">
-        <h1>TO DO</h1>
+    const { connectDropTarget, isOver } = this.props;
+    return connectDropTarget(
+      <div className="ToDoBox" style={{
+        position: 'relative'
+      }}>
+        <h1 className="boxTitle">TO DO</h1>
           {
             this.props.toDoCards.map(({ id, title, assignedTo, status, createdAt, createdBy, priority, updatedAt}) => 
               <Card
@@ -72,6 +77,18 @@ class ToDoBox extends Component {
                 updatedAt={updatedAt}
               />)
           }
+          {isOver &&
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            zIndex: 1,
+            opacity: 0.5,
+            backgroundColor: 'yellow',
+          }} />
+        } 
       </div>
     )
   }
@@ -91,14 +108,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(ToDoBox);
+ToDoBox.propTypes = {
+  isOver: PropTypes.bool.isRequired
+}
 
-const DraggableCard = DragSource("CARD", cardSource, collect)(ToDoBox)
-
-export default connect(
+const targetToDoBox = connect(
   mapStateToProps,
   mapDispatchToProps
-)(DraggableCard);
+)(ToDoBox);
+
+export default DropTarget(ItemTypes.CARD, cardTarget, collect)(targetToDoBox);

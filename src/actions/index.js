@@ -5,6 +5,10 @@ export const MOVE_CARD_LEFT = 'MOVE_CARD_LEFT'
 export const NEXT_CARD = 'NEXT_CARD'
 export const BACK_CARD = 'BACK_CARD'
 export const DELETE_CARD = 'DELETE_CARD'
+export const REMOVE_FROM_PAST_STATE = 'REMOVE_FROM_PAST_STATE'
+export const ADD_TO_NEW_STATE = 'ADD_TO_NEW_STATE'
+
+import { updateStatus } from '../lib/index';
 
 export function addCard(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt){
   return {
@@ -90,4 +94,35 @@ export function deleteCard(id, title, author, priority, status, createdBy, assig
     createdAt,
     updatedAt
   }
+}
+
+export function removeFromPastState(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt){
+    console.log("removeFromPastState")
+    return {
+        type: REMOVE_FROM_PAST_STATE,
+        status,
+        id,
+        title,
+        priority,
+        createdBy,
+        assignedTo,
+        createdAt,
+        updatedAt
+    }
+}
+
+export function addToNewState(id, title, author, priority, status, createdBy, assignedTo, createdAt, updatedAt, card){
+    console.log("addToNewState", card)
+    updateStatus(card, status)
+    return {
+        type: ADD_TO_NEW_STATE,
+        status,
+        id,
+        title,
+        priority,
+        createdBy,
+        assignedTo,
+        createdAt,
+        updatedAt
+    }
 }

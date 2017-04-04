@@ -26,14 +26,6 @@ function collect(connect, monitor) {
   };
 }
 
-// const propTypes = {
-//   text: PropTypes.string.isRequired,
-
-//   // Injected by React DnD:
-//   isDragging: PropTypes.bool.isRequired,
-//   connectDragSource: PropTypes.func.isRequired
-// };
-
 class Card extends Component {
   constructor(props){
     super(props);
@@ -44,11 +36,6 @@ class Card extends Component {
     this.delete = this.delete.bind(this);
   }
 
-
-
-  //function(){
-
-  // }
   next(e){
     e.preventDefault()
     this.nextCard(this.props)
