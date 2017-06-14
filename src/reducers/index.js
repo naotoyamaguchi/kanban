@@ -26,7 +26,7 @@ export function toDoCards(state = initialState, action) {
           }
         ]
       })
-    break;
+    
 
     case "inprogress":
       return Object.assign({}, state, {
@@ -44,7 +44,7 @@ export function toDoCards(state = initialState, action) {
           }
         ]
       })
-    break;
+    
 
     case "done":
       return Object.assign({}, state, {
@@ -62,7 +62,7 @@ export function toDoCards(state = initialState, action) {
           }
         ]
       })
-    break;
+   
 
     case MOVE_CARD_RIGHT:
 
@@ -326,6 +326,8 @@ export function toDoCards(state = initialState, action) {
         ]
       })
     }
+
+    break;
 
     default:
       return state;

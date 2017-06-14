@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     priority: DataTypes.STRING,
     status: DataTypes.STRING,
     createdBy: DataTypes.STRING,
-    assignedTo: DataTypes.STRING
+    assignedTo: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     classMethods: {
       associate: function(models) {

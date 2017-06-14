@@ -1,6 +1,10 @@
 @import "./partials/reset";
 @import "./partials/clearfix";
 
+p{
+  font-size: 1vw;
+}
+
 .App{
   font-family: Arial;
 }
@@ -14,7 +18,7 @@
 }
 
 .App-header{
-  font-size: 3vw;
+  font-size: 1vw;
   font-weight: bold;
   align-content: center;
   text-align: center;
@@ -63,10 +67,11 @@
 }
 
 .Card-Box{
-  border: 1px solid red;
-  margin-left: auto;
-  margin-right: auto;
+  background: gray;
+  border-radius:5px;
   width: 80%;
+  margin: 0 auto;
+  text-align: center
 }
 
 .Header{

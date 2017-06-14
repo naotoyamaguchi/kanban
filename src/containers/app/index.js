@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import KanbanTitle from '../../components/KanbanTitle';
 import ToDoBox from '../../components/ToDoBox';
 import InProgressBox from '../../components/InProgressBox';
 import DoneBox from '../../components/DoneBox';
@@ -15,9 +14,9 @@ export const ItemTypes = {
 
 class App extends Component {
 
-  constructor(){
-    super();
-  }
+  // constructor(){
+  //   super();
+  // }
 
   render() {
     return (
@@ -28,7 +27,7 @@ class App extends Component {
         </div>
         <div className="Kanban-Box">
           <p className="App-intro">
-            To get started, HELLO WORLD <code>src/App.js</code> and save to reload.
+            To get started, fill out all the entries above and submit your task!
           </p>
           <ToDoBox/>
           <InProgressBox/>
